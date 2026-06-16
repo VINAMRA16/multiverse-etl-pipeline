@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd 
-import sys 
+import sys # <--- ADD THIS
 from config import DB_NAME
 
 def export_multiverse_report():
@@ -10,23 +10,24 @@ def export_multiverse_report():
         conn.close()
     except Exception as e:
         print(f"DATABASE ERROR: {e}")
-        sys.exit(1) 
+        sys.exit(1) # <--- ADD THIS (Forces GitHub to crash and show the error!)
     
     if df.empty:
         print("⚠️ The Vault is empty. Run main.py first to gather data.")
-        sys.exit(1) 
-
+        sys.exit(1) # <--- ADD THIS
+    
     species_count = df["species"].value_counts().reset_index()
     status_count = df["status"].value_counts().reset_index()
 
     try:
-        with pd.ExcelWriter("Multiverse_Report.xlsx",engine = 'openpyxl') as writer:
-            df.to_excel(writer,sheet_name="Raw_Data", index=False)
-            species_count.to_excel(writer,sheet_name='Species_Demographics',index=False)
-            status_count.to_excel(writer,sheet_name='Life_Status', index=False)
-            print("✅ SUCCESS: Report locked and saved as Multiverse_Report.xlsx" )
+        with pd.ExcelWriter("Multiverse_Report.xlsx", engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name="Raw_Data", index=False)
+            species_count.to_excel(writer, sheet_name='Species_Demographics', index=False)
+            status_count.to_excel(writer, sheet_name='Life_Status', index=False)
+            print("✅ SUCCESS: Report locked and saved as Multiverse_Report.xlsx")
     except ModuleNotFoundError:
         print("⚠️ Missing openpyxl. Run this in terminal: pip install openpyxl")
+        sys.exit(1) # <--- ADD THIS
 
 if __name__ == "__main__":
     export_multiverse_report()

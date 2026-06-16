@@ -1,5 +1,6 @@
 import sqlite3
 from config import DB_NAME
+import sys
 
 
 def load_to_db(df):
@@ -40,6 +41,7 @@ def load_to_db(df):
 
     except sqlite3.Error as e:
         print(f"DATABASE ERROR : {e}")
+        sys.exit(1)
 
     finally:
         cursor.close()

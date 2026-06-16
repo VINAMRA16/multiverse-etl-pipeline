@@ -1,6 +1,5 @@
 name: Multiverse ETL Ghost Engine
 
-# OPT INTO NODE 24 TO FIX THE WARNING
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -11,20 +10,35 @@ on:
 
 jobs:
   run-etl-pipeline:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
-
     - name: Checkout Code
-      uses: actions/checkout@v4  
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v5 
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests pandas openpyxl
+
+    # Let's add a "ls" command so the terminal shows us the files!
+    - name: Execute Main ETL Pipeline
+      run: |
+        python main.py
+        ls -la
+
+    - name: Execute Analytics Engine
+      run: |
+        python analytics.py
+        ls -la
+
     - name: Upload Executive Report to GitHub
-      uses: actions/upload-artifact@v4 
+      uses: actions/upload-artifact@v4
       with:
         name: Daily_Multiverse_Report
         path: Multiverse_Report.xlsx
