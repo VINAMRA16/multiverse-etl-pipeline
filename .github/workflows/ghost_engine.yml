@@ -1,10 +1,14 @@
 name: Multiverse ETL Ghost Engine
 
+# OPT INTO NODE 24 TO FIX THE WARNING
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
-    
     - cron: '0 3 * * *'
-  workflow_dispatch: 
+  workflow_dispatch:
+
 jobs:
   run-etl-pipeline:
     runs-on: ubuntu-latest 

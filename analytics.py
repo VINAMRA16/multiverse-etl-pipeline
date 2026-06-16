@@ -1,22 +1,21 @@
 import sqlite3
 import pandas as pd 
+import sys 
 from config import DB_NAME
 
 def export_multiverse_report():
-
     try:
         conn = sqlite3.connect(DB_NAME)
         df = pd.read_sql_query("SELECT * FROM characters", conn)
         conn.close()
-
     except Exception as e:
-        print(f"DATABASE ERROR {e}")
-        return
+        print(f"DATABASE ERROR: {e}")
+        sys.exit(1) 
     
     if df.empty:
         print("⚠️ The Vault is empty. Run main.py first to gather data.")
-        return
-    
+        sys.exit(1) 
+
     species_count = df["species"].value_counts().reset_index()
     status_count = df["status"].value_counts().reset_index()
 
